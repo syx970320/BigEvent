@@ -38,6 +38,7 @@ $.ajax({
 
         }
     },
+    // 完成后调用,不管成功还是失败
     complete: function (xhr) {
         // xhr: 经过JQ封装后，xhr对象；
         // 原生xhr 找出返回的数据： xhr.reponseText;
