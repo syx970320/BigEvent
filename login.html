@@ -91,10 +91,10 @@
             type="password"
             name="password"
             required
-            lay-verify="required"
+            lay-verify="required|changdu"
             placeholder="请输入密码"
             autocomplete="off"
-            class="layui-input"
+            class="layui-input pwd"
           />
         </div>
 
@@ -104,7 +104,7 @@
           <input
             type="password"
             required
-            lay-verify="required"
+            lay-verify="required|changdu|same"
             placeholder="再次输入密码"
             autocomplete="off"
             class="layui-input"

@@ -1,4 +1,4 @@
-// 注册登录切换
+// 注册登录切换显示
 $('#goto-register').click(function () {
     $('#login').hide();
     $('#register').show()
@@ -10,6 +10,18 @@ $('#goto-login').click(function () {
 });
 
 // --------------------------注册
+// 注册规范验证
+var form = layui.form;
+form.verify({
+    changdu: [/^\S{6,12}$/, '长度6~12位,不能有空格'],
+    same: function (val) {
+        // 谁添加same方法 val 就是谁的值
+        if ($('.pwd').val() != val) {
+            return '两次密码不一致呦~'
+        }
+    }
+});
+
 $('#register .layui-form').on('submit', function (e) {
     // 1.阻止默认行为
     e.preventDefault();
