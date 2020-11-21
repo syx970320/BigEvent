@@ -32,7 +32,7 @@ $('#register .layui-form').on('submit', function (e) {
     // 3.发送ajax请求
     $.ajax({
         type: 'POST',
-        url: 'http://ajax.frontend.itheima.net/api/reguser',
+        url: '/api/reguser',
         data: parmas,
         success: function (res) {
             layer.msg(res.message);
@@ -57,7 +57,7 @@ $('#login form').on('submit', function (e) {
     // ajax提交
     $.ajax({
         type: 'POST',
-        url: 'http://ajax.frontend.itheima.net/api/login',
+        url: '/api/login',
         data: data,
         success: function (res) {
             // 无论登录成功，还是失败，都给提示

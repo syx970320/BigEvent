@@ -4,11 +4,7 @@ if (localStorage.getItem('token') == null) {
 
 // ----------------------------------------------请求个人信息
 $.ajax({
-    url: "http://ajax.frontend.itheima.net/my/userinfo",
-    // 设置请求头：
-    headers: {
-        "Authorization": localStorage.getItem("token"),
-    },
+    url: "/my/userinfo",
     success: function (res) {
         console.log(res);
         if (res.status == 0) {
@@ -38,19 +34,6 @@ $.ajax({
 
         }
     },
-    // 完成后调用,不管成功还是失败
-    complete: function (xhr) {
-        // xhr: 经过JQ封装后，xhr对象；
-        // 原生xhr 找出返回的数据： xhr.reponseText;
-        // xhr.responseJSON
-        // console.log(xhr.responseJSON, 11111111111111);
-        if (xhr.responseJSON.status == 1 || xhr.responseJSON.message == "身份认证失败！") {
-            // 比较好的方式：就是清空
-            localStorage.removeItem("token");
-            location.href = "/login.html";
-        }
-
-    }
 });
 
 // ----------------------------------------------退出
