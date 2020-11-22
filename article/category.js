@@ -1,3 +1,4 @@
+// ----------------------------------------------初始化列表
 function getList() {
     // 获取文章类别
     $.ajax({
@@ -27,7 +28,7 @@ function getList() {
 };
 getList();
 
-// 新增文章分类
+// ----------------------------------------------新增文章分类
 var add_str = `<form class="layui-form add-form" action="" style="margin: 30px; margin-left: 0px;" id="add_form">
                     <div class="layui-form-item">
                     <label class="layui-form-label">类别名称</label>
@@ -108,3 +109,110 @@ function addForm(index) {
         })
     })
 }
+
+// ----------------------------------------------删除
+$('tbody').on('click', '.delete', function () {
+    // 获取自定义属性
+    var id = $(this).attr('myid');
+
+    // 弹窗提醒是否要删除
+    layer.confirm('你确定要删除吗?', { icon: 3, title: '提示' }, function (index) {
+        // ajax
+        $.ajax({
+            url: '/my/article/deletecate/' + id,
+            success: function (res) {
+                layer.msg(res.message);
+                if (res.status == 0) {
+                    // 重新渲染页面
+                    getList();
+                }
+            }
+        })
+        // 关闭弹窗
+        layer.close(index);
+    });
+});
+
+// ----------------------------------------------------------------编辑
+// 
+var edit_str = `
+  <form class="layui-form add-form" action="" style="margin: 30px; margin-left: 0px;" id="edit_form" lay-filter="edit">
+    <div class="layui-form-item">
+      <label class="layui-form-label">类别名称</label>
+      <div class="layui-input-block">
+        <input type="text" name="name" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">类别别名</label>
+      <div class="layui-input-block">
+        <input type="text" name="alias" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <input type="hidden" name="Id">
+    <div class="layui-form-item">
+      <div class="layui-input-block">
+        <button class="layui-btn" lay-submit >确认修改</button>
+      </div>
+    </div>
+  </form>`;
+// 1.事件委托
+var form = layui.form;
+$("tbody").on("click", ".edit", function (e) {
+
+    // 2.点击后，获取id值；
+    var id = $(e.target).attr("myid");
+
+    // 3.接口获取对应数据
+    $.ajax({
+        url: "/my/article/cates/" + id,
+        success: function (res) {
+            if (res.status == 0) {
+                // 4.弹窗显示后
+                layer.open({
+                    type: 1,
+                    title: '编辑类别',
+                    content: edit_str,
+                    area: ['500px', '250px'],
+                    // 层创建完毕时,里面有显示获取到数据
+                    success: function (layero, index) {
+                        // 5. layui.form
+                        //  5.1 去模板字符串里面新添加 type=hidden input;
+                        //  5.2 layui.form;  form表单上 lay-filter="edit"
+                        form.val("edit", res.data);
+
+                        // 6.注册提交事件
+                        edit_sub(index);
+                    }
+                });
+            }
+
+        }
+    })
+});
+
+// 6.给form注册提交事件
+function edit_sub(numb) {
+    $("#edit_form").on("submit", function (e) {
+        e.preventDefault();
+
+        // 6.1 获取数据
+        var data = $(this).serialize();
+
+        // 6.2 提交
+        $.ajax({
+            url: "/my/article/updatecate",
+            type: "post",
+            data: data,
+            success: function (res) {
+                layer.msg(res.message);
+                if (res.status === 0) {
+                    // 添加成功，重新渲染列表
+                    getList();
+                    // 关闭弹出层
+                    layer.close(numb);
+                }
+            }
+        })
+    })
+};
