@@ -5,7 +5,7 @@ $.ajax({
   success: function (res) {
 
     if (res.status == 0) {
-      var str = "";
+      var str = `<option value="">所有分类</option>`;
       $.each(res.data, function (index, ele) {
         str += `<option value="${ele.Id}">${ele.name}</option>`;
       });
@@ -97,7 +97,7 @@ $("form").on("submit", function (e) {
         // 设计：
         if (res.status == 0) {
           // 页面转跳到 文章列表 页面
-          location.href = '/article/article/article.html';
+          location.href = '/article/list/list.html';
 
           // 响应dom节点 类名添加
           var dom = window.parent.document.querySelector("#wzlist");
